@@ -5,6 +5,8 @@
  */
 package rms;
 
+import rms.engine.Engine;
+
 /**
  *
  * @author blagiev
@@ -12,10 +14,12 @@ package rms;
 public class RMS {
 
     /**
+     * Class in which application starts
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Engine engine = Engine.getInstance();
+        engine.run();
     }
     
 }
