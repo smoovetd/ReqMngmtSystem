@@ -2,6 +2,8 @@ package rms.engine;
 
 import rms.io.output.ConsoleOutput;
 import rms.io.output.Output;
+import rms.ui.MainMenu;
+import rms.ui.Menu;
 import rms.ui.UserMessages;
 
 
@@ -14,6 +16,7 @@ public class Engine {
     private static Engine engineInstance = new Engine();
     private Output output = ConsoleOutput.getInstance();
     private UserMessages userMessages = UserMessages.getInstance();
+    private Menu crntMenu;
     
     private Engine(){}
     
