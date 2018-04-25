@@ -18,7 +18,9 @@ public class Engine {
     private UserMessages userMessages = UserMessages.getInstance();
     private Menu crntMenu;
     
-    private Engine(){}
+    private Engine(){
+        this.crntMenu = initMenu();
+    }
     
     public static Engine getInstance(){
         return engineInstance;
@@ -28,7 +30,7 @@ public class Engine {
         // show wellcome screen
        output.showOutput(userMessages.getWellcomeMessage());
         // show menu
-       
+       this.crntMenu.show(output);
         // while not exit
             // get input
             // process input
@@ -36,6 +38,11 @@ public class Engine {
         
         // show exit screen
         output.showOutput(userMessages.getGoodbyeMessage());
+        
+    }
+    
+    private static Menu initMenu(){
+        return new MainMenu();
     }
     
 }
