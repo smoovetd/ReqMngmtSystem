@@ -1,5 +1,7 @@
 package rms.engine;
 
+import rms.io.input.ConsoleInput;
+import rms.io.input.Input;
 import rms.io.output.ConsoleOutput;
 import rms.io.output.Output;
 import rms.ui.MainMenu;
@@ -17,6 +19,7 @@ public class Engine {
     private Output output = ConsoleOutput.getInstance();
     private UserMessages userMessages = UserMessages.getInstance();
     private Menu crntMenu;
+    private Input input = ConsoleInput.getInputInstance();
     
     private Engine(){
         this.crntMenu = initMenu();
@@ -27,13 +30,34 @@ public class Engine {
     }
     
     public void run(){
-        // show wellcome screen
+       StringBuilder sbInput = new StringBuilder();
+       boolean isExit = false;
+       boolean isValidInput = false;
+       // show wellcome screen
        output.showOutput(userMessages.getWellcomeMessage());
         // show menu
        this.crntMenu.show(output);
-        // while not exit
+       
+         // while not exit
             // get input
             // process input
+      
+       while(!isExit){
+           sbInput.append(input.getInput());
+           
+           do{
+               isValidInput = false;
+               for (int key :  this.crntMenu.getMenuItems().keySet()){
+                   if((sbInput.toString()).equals(key + "")){
+                       isValidInput = true;
+                   }
+               }
+           }while(isValidInput);
+           
+           output.showOutput(sbInput.toString());
+           sbInput.replace(0, sbInput.length(), "");
+       }
+       
         
         
         // show exit screen

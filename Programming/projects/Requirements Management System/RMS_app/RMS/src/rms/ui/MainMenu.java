@@ -23,6 +23,11 @@ public class MainMenu implements Menu{
         }
     }
     
+    @Override
+    public HashMap<Integer, String> getMenuItems(){
+        return this.menuItems;
+    }
+    
     protected void initMenu(){
         this.menuItems.put(1, "Open Project");
         this.menuItems.put(2, "New Project");

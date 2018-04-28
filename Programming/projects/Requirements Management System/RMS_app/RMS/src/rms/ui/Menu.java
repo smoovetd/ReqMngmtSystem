@@ -1,5 +1,6 @@
 package rms.ui;
 
+import java.util.HashMap;
 import rms.io.output.Output;
 
 /**
@@ -8,4 +9,6 @@ import rms.io.output.Output;
  */
 public interface Menu {
     public void show(Output output);
+    
+    public HashMap<Integer, String> getMenuItems();
 }
