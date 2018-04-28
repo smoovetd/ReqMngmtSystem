@@ -52,9 +52,14 @@ public class Engine {
                        isValidInput = true;
                    }
                }
-           }while(isValidInput);
+           }while(!isValidInput);
            
            output.showOutput(sbInput.toString());
+           
+           if (this.crntMenu.getMenuItems().get(sbInput.toString()).equals("Exit")){
+               isExit = true;
+           }
+           
            sbInput.replace(0, sbInput.length(), "");
        }
        
