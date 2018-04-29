@@ -50,6 +50,7 @@ public class Engine {
                for (int key :  this.crntMenu.getMenuItems().keySet()){
                    if((sbInput.toString()).equals(key + "")){
                        isValidInput = true;
+                       break;
                    }
                }
            }while(isValidInput);
