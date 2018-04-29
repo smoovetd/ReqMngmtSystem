@@ -14,6 +14,12 @@ public class Project {
     
     private String description;
     
+    //private HashSet<Requirement> requirements;
+    
+    //private HashSet<ChangeRequest> changeRequests;
+    
+    //private HashSet<Baseline> baselines;
+    
     public Project (String name, String description){
         
     }

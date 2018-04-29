@@ -1,15 +1,19 @@
 package rms.ui;
 
 import java.util.HashMap;
+import rms.io.input.Input;
 import rms.io.output.Output;
+import static rms.utils.IdTracker.LAST_USED_PROJECT_INDEX;
 
 /**
- *
+ * Main menu will be displayed on start of the application
  * @author blagiev
  */
 public class MainMenu implements Menu{
     
     private HashMap<Integer, String> menuItems;
+    
+    private Output output;
     
     public MainMenu(){
         this.menuItems = new HashMap();
@@ -33,4 +37,34 @@ public class MainMenu implements Menu{
         this.menuItems.put(2, "New Project");
         this.menuItems.put(3, "Exit");
     }
+    
+    public void createNewProject(Output output, Input input){
+        String name = "";
+        StringBuilder description = new StringBuilder();
+        Long id = LAST_USED_PROJECT_INDEX++;
+        boolean isInputValid = false;
+        
+        do{
+            
+            output.showOutput("Enter Project Name:");
+            name = input.getInput();
+            
+            output.showOutput("Enter Project Description:");
+            description.append(input.getInput());
+            
+            if(name.length() == 0 || description.length() == 0){
+                isInputValid = false;
+                output.showOutput("Incorrect Input. Name and description should not be empty!");
+            } else{
+                isInputValid = true;
+            }
+            
+            
+           
+        }while (isInputValid);
+        
+        
+        
+    }
+    
 }
