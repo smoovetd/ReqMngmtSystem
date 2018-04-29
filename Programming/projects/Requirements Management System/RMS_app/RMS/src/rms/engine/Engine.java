@@ -42,10 +42,9 @@ public class Engine {
             // get input
             // process input
       
-       while(!isExit){
-           sbInput.append(input.getInput());
-           
+       while(!isExit){          
            do{
+               sbInput.append(input.getInput());
                isValidInput = false;
                for (int key :  this.crntMenu.getMenuItems().keySet()){
                    if((sbInput.toString()).equals(key + "")){
@@ -53,11 +52,17 @@ public class Engine {
                        break;
                    }
                }
+               
+               if(!isValidInput){
+                   output.showOutput("Incorrect Input was entered!");
+                   sbInput.replace(0, sbInput.length(), "");
+               }
+               
            }while(!isValidInput);
            
            output.showOutput(sbInput.toString());
            
-           if (this.crntMenu.getMenuItems().get(sbInput.toString()).equals("Exit")){
+           if (this.crntMenu.getMenuItems().get(Integer.valueOf(sbInput.toString())).equals("Exit")){
                isExit = true;
            }
            
