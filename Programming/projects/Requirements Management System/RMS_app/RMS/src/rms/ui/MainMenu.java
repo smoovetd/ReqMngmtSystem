@@ -45,6 +45,8 @@ public class MainMenu implements Menu{
         Long id = LAST_USED_PROJECT_INDEX++;
         boolean isInputValid = false;
         
+        output.showOutput("Press Esc to return. No project will be set!");
+        
         do{
             
             output.showOutput("Enter Project Name:");
