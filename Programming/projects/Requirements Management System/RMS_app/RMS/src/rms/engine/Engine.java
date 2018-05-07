@@ -23,7 +23,7 @@ public class Engine {
     private Input input = ConsoleInput.getInputInstance();
     
     private Engine(){
-        this.crntMenu = initMenu();
+        this.crntMenu = MainMenu.getMainMenuInstance();
     }
     
     public static Engine getInstance(){
@@ -62,11 +62,7 @@ public class Engine {
            
            output.showOutput(sbInput.toString());
            
-           if (this.crntMenu.getMenuItems().get(Integer.valueOf(sbInput.toString())).equals("Exit")){
-               isExit = true;
-           }
-           
-           
+           this.crntMenu = this.crntMenu.processCommand(Integer.valueOf(sbInput.toString()), output, input);
            sbInput.replace(0, sbInput.length(), "");
        }
        
@@ -75,10 +71,6 @@ public class Engine {
         // show exit screen
         output.showOutput(userMessages.getGoodbyeMessage());
         
-    }
-    
-    private static Menu initMenu(){
-        return new MainMenu();
     }
     
 }
