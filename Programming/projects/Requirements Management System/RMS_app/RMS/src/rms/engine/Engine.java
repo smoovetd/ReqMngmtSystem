@@ -11,6 +11,7 @@ import rms.ui.UserMessages;
 
 /**
  * Engine - singleton class that runs the application
+ * run() waits for input and input is processed until command for Exit is received.
  * @author blagiev
  */
 public class Engine {
@@ -41,7 +42,6 @@ public class Engine {
          // while not exit
             // get input
             // process input
-      
        while(!isExit){          
            do{
                sbInput.append(input.getInput());
@@ -65,6 +65,7 @@ public class Engine {
            if (this.crntMenu.getMenuItems().get(Integer.valueOf(sbInput.toString())).equals("Exit")){
                isExit = true;
            }
+           
            
            sbInput.replace(0, sbInput.length(), "");
        }

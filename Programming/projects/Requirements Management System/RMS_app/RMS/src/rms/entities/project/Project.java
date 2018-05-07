@@ -1,5 +1,8 @@
 package rms.entities.project;
 
+import rms.io.output.Output;
+import rms.utils.IdTracker;
+
 /**
  * Projects will be the base object - all requirements and change requests will be related to a projects.
  * Each project can have many requirements and change requests.
@@ -21,8 +24,19 @@ public class Project {
     //private HashSet<Baseline> baselines;
     
     public Project (String name, String description){
-        
+        this.setId();
+        this.setName(name);
+        this.setDescription(description);
     }
+    
+    private void setId(){
+        this.id = IdTracker.LAST_USED_PROJECT_INDEX++;
+    }
+    
+    public long getId(){
+        return this.id;
+    }
+    
     
     private void setName(String name){
         if (name.isEmpty()){
@@ -46,6 +60,17 @@ public class Project {
     
     public String getDescription(){
         return this.description;
+    }
+    
+    /**
+     * This method is for debug purposes - prints information for the project
+     */
+    public void printProjInfo(Output output){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Project ID: " + this.getId() + "\n");
+        sb.append("Project Name: " + this.getName() + "\n");
+        sb.append("Project Description: " + this.getDescription());
+        output.showOutput(sb.toString());
     }
     
 }

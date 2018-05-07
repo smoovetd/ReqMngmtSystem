@@ -11,4 +11,5 @@ public interface Menu {
     public void show(Output output);
     
     public HashMap<Integer, String> getMenuItems();
+    
 }

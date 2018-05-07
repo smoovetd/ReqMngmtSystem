@@ -1,6 +1,7 @@
 package rms.ui;
 
 import java.util.HashMap;
+import rms.entities.project.Project;
 import rms.io.input.Input;
 import rms.io.output.Output;
 import static rms.utils.IdTracker.LAST_USED_PROJECT_INDEX;
@@ -38,9 +39,9 @@ public class MainMenu implements Menu{
         this.menuItems.put(3, "Exit");
     }
     
-    public void createNewProject(Output output, Input input){
+    public Project createNewProject(Output output, Input input){
         String name = "";
-        StringBuilder description = new StringBuilder();
+        String description = "";
         Long id = LAST_USED_PROJECT_INDEX++;
         boolean isInputValid = false;
         
@@ -48,23 +49,28 @@ public class MainMenu implements Menu{
             
             output.showOutput("Enter Project Name:");
             name = input.getInput();
-            
-            output.showOutput("Enter Project Description:");
-            description.append(input.getInput());
-            
-            if(name.length() == 0 || description.length() == 0){
+            if(name.length() == 0){
                 isInputValid = false;
-                output.showOutput("Incorrect Input. Name and description should not be empty!");
+                output.showOutput("Incorrect Input. Name should not be empty!");
+                continue;
+            }
+        }while(isInputValid);
+       
+        do{
+            output.showOutput("Enter Project Description:");
+            description = input.getInput();
+            
+            if(description.length() == 0){
+                isInputValid = false;
+                output.showOutput("Incorrect Input. Description should not be empty!");
             } else{
                 isInputValid = true;
             }
-            
-            
            
         }while (isInputValid);
         
-        
-        
+        Project newProject = new Project(name, description);
+        return newProject;
     }
     
 }
