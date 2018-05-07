@@ -63,11 +63,14 @@ public class Engine {
            output.showOutput(sbInput.toString());
            
            this.crntMenu = this.crntMenu.processCommand(Integer.valueOf(sbInput.toString()), output, input);
+           if (this.crntMenu == null){
+               isExit = true;
+           } else{
+               this.crntMenu.show(output);
+           }
            sbInput.replace(0, sbInput.length(), "");
        }
        
-        
-        
         // show exit screen
         output.showOutput(userMessages.getGoodbyeMessage());
         

@@ -11,11 +11,11 @@ import rms.engine.SystemMessages;
  */
 public class ConsoleInput implements Input {
     
-    private static ConsoleInput inputInstance = new ConsoleInput();
+    private static final ConsoleInput inputInstance = new ConsoleInput();
     
     private static String DEFAULT_INPUT = "DEFAULT_INPUT";
     
-    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     
     private ConsoleInput(){
     }

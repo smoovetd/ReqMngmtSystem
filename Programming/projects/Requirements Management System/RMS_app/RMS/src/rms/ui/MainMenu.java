@@ -58,25 +58,27 @@ public class MainMenu implements Menu{
             
             output.showOutput("Enter Project Name:");
             name = input.getInput();
-            if(name.length() == 0){
+            
+            if(name.equals("")){
                 isInputValid = false;
                 output.showOutput("Incorrect Input. Name should not be empty!");
-                continue;
+            } else{
+                isInputValid = true;
             }
-        }while(isInputValid);
+        }while(!isInputValid);
        
         do{
             output.showOutput("Enter Project Description:");
             description = input.getInput();
             
-            if(description.length() == 0){
+            if(description.equals("")){
                 isInputValid = false;
                 output.showOutput("Incorrect Input. Description should not be empty!");
             } else{
                 isInputValid = true;
             }
            
-        }while (isInputValid);
+        }while (!isInputValid);
         
         Project newProject = new Project(name, description);
         return newProject;
