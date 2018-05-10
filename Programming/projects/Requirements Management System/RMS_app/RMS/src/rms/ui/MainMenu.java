@@ -1,6 +1,8 @@
 package rms.ui;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import rms.entities.project.Project;
 import rms.io.input.Input;
 import rms.io.output.Output;
@@ -8,6 +10,8 @@ import static rms.utils.IdTracker.LAST_USED_PROJECT_INDEX;
 
 /**
  * Main menu will be displayed on start of the application
+ * There will be options to Open new Project, Edit current Project or Exit
+ * Command will be processed and passed to Edit Project Menu (new or existing) or Exit
  * @author blagiev
  */
 public class MainMenu implements Menu{
@@ -18,9 +22,12 @@ public class MainMenu implements Menu{
     
     private static Menu mainMenuInstance = new MainMenu();
     
+    private Set<Project> projects;
+    
     private MainMenu(){
         this.menuItems = new HashMap();
         initMenu();
+        this.projects = new HashSet<Project>();
     }
     
     public static Menu getMainMenuInstance(){
@@ -84,23 +91,54 @@ public class MainMenu implements Menu{
         return newProject;
     }
     
+    private void addProject(Project project){
+        this.projects.add(project);
+    }
+    
+    public Set<Project> getProjects(){
+        return this.projects;
+    }
+    
+    public Project openExistingProjectById(Output output, Input input){
+        Project project = null;
+        String crntInput = "";
+        boolean isValidInput = false;
+        
+        do{
+            output.showOutput("List Of All Projects is: ");
+            printProjectsById(output);
+            output.showOutput("Enter ID:");
+            isValidInput = false;
+            crntInput = input.getInput();
+            
+            
+            
+        }while(!isValidInput);
+        
+        return project;
+    }
+    
     @Override
     public Menu processCommand(int commandId, Output output, Input input){
         Menu newMenuItem = null;
+        Project crntProj = null;
         
         switch (this.menuItems.get(commandId).toUpperCase()){
             case MenuConstants.OPEN_EXISTING_PROJECT:
-                throw new RuntimeException("Open existing project menu is not available");
-                //break;
+                crntProj = openExistingProjectById(output, input);
+                if(crntProj == null){
+                    newMenuItem = null;
+                }
+                break;
             case MenuConstants.OPEN_NEW_PROJECT:
-                Project crntProj = createNewProject(output, input);
+                crntProj = createNewProject(output, input);
                 if (crntProj != null){
                     crntProj.printProjInfo(output);
                     throw new RuntimeException("Open existing project menu is not available");
                 } else{
                     newMenuItem = getMainMenuInstance();
                 }
-                //break;
+                break;
             case MenuConstants.EXIT:
                 newMenuItem = null;
                 break;
@@ -110,6 +148,10 @@ public class MainMenu implements Menu{
                 //break;
         }
         return newMenuItem;
+    }
+    
+    public void printProjectsById(Output output){
+        this.projects.stream().forEach(crntProj -> output.showOutput("Project ID: " + crntProj.getId() + " Name: " + crntProj.getName()));
     }
     
 }
