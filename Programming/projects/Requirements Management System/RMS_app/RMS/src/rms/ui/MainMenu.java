@@ -24,7 +24,7 @@ public class MainMenu implements Menu{
     
     private Set<Project> projects;
     
-    private MainMenu(){
+    private MainMenu(){ 
         this.menuItems = new HashMap();
         initMenu();
         this.projects = new HashSet<Project>();
@@ -99,10 +99,10 @@ public class MainMenu implements Menu{
         return this.projects;
     }
     
-    public Project openExistingProjectById(Output output, Input input){
-        Project project = null;
+    public Long selectExistingProjectID(Output output, Input input){
         String crntInput = "";
         boolean isValidInput = false;
+        long crntId = -1l;
         
         do{
             output.showOutput("List Of All Projects is: ");
@@ -111,29 +111,40 @@ public class MainMenu implements Menu{
             isValidInput = false;
             crntInput = input.getInput();
             
+            try{
+                crntId = Long.valueOf(crntInput);
+            }catch(NumberFormatException ex){
+                output.showOutput("Invalid number is entered!");
+                continue;
+            }
             
             
         }while(!isValidInput);
         
-        return project;
+        return crntId;
     }
     
     @Override
     public Menu processCommand(int commandId, Output output, Input input){
         Menu newMenuItem = null;
+        Long crntProjID = -1l;
         Project crntProj = null;
         
         switch (this.menuItems.get(commandId).toUpperCase()){
             case MenuConstants.OPEN_EXISTING_PROJECT:
-                crntProj = openExistingProjectById(output, input);
-                if(crntProj == null){
+                crntProjID = selectExistingProjectID(output, input);
+                if(crntProjID == null){
                     newMenuItem = null;
                 }
+                crntProj = getProjectByID(crntProjID);
                 break;
+                                
             case MenuConstants.OPEN_NEW_PROJECT:
                 crntProj = createNewProject(output, input);
                 if (crntProj != null){
                     crntProj.printProjInfo(output);
+                    crntProjID = crntProj.getId();
+                    newMenuItem = new EditProjectMenu(crntProj);
                     throw new RuntimeException("Open existing project menu is not available");
                 } else{
                     newMenuItem = getMainMenuInstance();
@@ -154,4 +165,30 @@ public class MainMenu implements Menu{
         this.projects.stream().forEach(crntProj -> output.showOutput("Project ID: " + crntProj.getId() + " Name: " + crntProj.getName()));
     }
     
+    
+    public boolean isProjectIDValid(long id){
+        boolean result = false;
+        
+        for(Project crntProj : this.projects){
+            if(crntProj.getId() == id){
+                result = true;
+                break;
+            }
+        }
+        
+        return result;
+    }
+    
+    public Project getProjectByID(long id){
+        Project crntProj = null;
+        
+        for (Project proj : this.projects){
+            if(id == proj.getId()){
+                crntProj = proj;
+                break;
+            }
+        }
+        
+        return crntProj;
+    }
 }
