@@ -36,7 +36,10 @@ public class Engine {
        boolean isValidInput = false;
        // show wellcome screen
        output.showOutput(userMessages.getWellcomeMessage());
-        // show menu
+       
+       // create DB if not exists
+       
+       // show menu
        this.crntMenu.show(output);
        
          // while not exit

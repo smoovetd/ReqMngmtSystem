@@ -6,7 +6,7 @@ import rms.io.input.Input;
 import rms.io.output.Output;
 
 /**
- *
+ * This menu appears when Project is selected. Gives all sub-items like Baseline, Requirement and Change Requests
  * @author blagiev
  */
 public class EditProjectMenu implements Menu{
@@ -14,7 +14,7 @@ public class EditProjectMenu implements Menu{
     private Project project;
     
     public EditProjectMenu(Project project) {
-        
+        this.setProject(project);
     }
     
     private void setProject(Project project){

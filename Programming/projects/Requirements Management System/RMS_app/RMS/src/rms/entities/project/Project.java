@@ -73,4 +73,19 @@ public class Project {
         output.showOutput(sb.toString());
     }
     
+    public boolean addProjectToDB(){
+        boolean result = false;
+        String query = "";
+        
+        return result;
+    }
+    
+    public boolean updateProject(){
+        boolean result = false;
+        
+        
+        return result;        
+    }
+    
+    
 }
