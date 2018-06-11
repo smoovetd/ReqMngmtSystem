@@ -1,5 +1,7 @@
 package rms.engine;
 
+import rms.entities.dbLink.DBConnection;
+import rms.entities.dbLink.DBConnectionImpl;
 import rms.io.input.ConsoleInput;
 import rms.io.input.Input;
 import rms.io.output.ConsoleOutput;
@@ -34,8 +36,12 @@ public class Engine {
        StringBuilder sbInput = new StringBuilder();
        boolean isExit = false;
        boolean isValidInput = false;
-       // show wellcome screen
+       
+       DBConnection dBConnection = DBConnectionImpl.getInstance();
+       
+// show wellcome screen
        output.showOutput(userMessages.getWellcomeMessage());
+       
        
        // create DB if not exists
        
@@ -64,6 +70,8 @@ public class Engine {
            }while(!isValidInput);
            
            output.showOutput(sbInput.toString());
+           
+           this.crntMenu.setDBConnection(dBConnection);
            
            this.crntMenu = this.crntMenu.processCommand(Integer.valueOf(sbInput.toString()), output, input);
            if (this.crntMenu == null){

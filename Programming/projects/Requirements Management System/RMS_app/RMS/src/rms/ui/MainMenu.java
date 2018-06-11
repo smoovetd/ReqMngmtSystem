@@ -1,8 +1,10 @@
 package rms.ui;
 
+import com.sun.media.sound.DLSModulator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import rms.entities.dbLink.DBConnection;
 import rms.entities.project.Project;
 import rms.io.input.Input;
 import rms.io.output.Output;
@@ -24,6 +26,8 @@ public class MainMenu implements Menu{
     
     private Set<Project> projects;
     
+    private DBConnection dbConnection;
+    
     private MainMenu(){ 
         this.menuItems = new HashMap();
         initMenu();
@@ -33,7 +37,16 @@ public class MainMenu implements Menu{
     public static Menu getMainMenuInstance(){
         return mainMenuInstance;
     }
+    
+    @Override
+    public void setDBConnection(DBConnection dbConnection){
+        this.dbConnection = dbConnection;
+    }
             
+    @Override
+    public DBConnection getDBConnection(){
+        return this.dbConnection;
+    }
             
     @Override
     public void show(Output output){
@@ -53,7 +66,7 @@ public class MainMenu implements Menu{
         this.menuItems.put(3, MenuConstants.EXIT);
     }
     
-    public static Project createNewProject(Output output, Input input){
+    public static Project createNewProject(Output output, Input input, DBConnection dbConnection){
         String name = "";
         String description = "";
         Long id = LAST_USED_PROJECT_INDEX++;
@@ -87,7 +100,8 @@ public class MainMenu implements Menu{
            
         }while (!isInputValid);
         
-        Project newProject = new Project(name, description);
+        Project newProject = new Project(name, description, dbConnection);
+        newProject.addProjectToDB(output);
         return newProject;
     }
     
@@ -140,7 +154,7 @@ public class MainMenu implements Menu{
                 break;
                                 
             case MenuConstants.OPEN_NEW_PROJECT:
-                crntProj = createNewProject(output, input);
+                crntProj = createNewProject(output, input, this.getDBConnection());
                 if (crntProj != null){
                     crntProj.printProjInfo(output);
                     crntProjID = crntProj.getId();

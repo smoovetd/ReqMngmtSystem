@@ -1,5 +1,7 @@
 package rms.entities.project;
 
+import static rms.engine.SystemMessages.ERROR_IN_TABLE_CREATION;
+import rms.entities.dbLink.DBConnection;
 import rms.io.output.Output;
 import rms.utils.IdTracker;
 
@@ -17,16 +19,29 @@ public class Project {
     
     private String description;
     
+    private final String projectTableName = "projects";
+    
+    private DBConnection dbConnection;
+    
     //private HashSet<Requirement> requirements;
     
     //private HashSet<ChangeRequest> changeRequests;
     
     //private HashSet<Baseline> baselines;
     
-    public Project (String name, String description){
+    public Project (String name, String description, DBConnection dbConnection){
         this.setId();
         this.setName(name);
         this.setDescription(description);
+        this.setDBConnection(dbConnection);
+    }
+    
+    private void setDBConnection(DBConnection dbConnection){
+        this.dbConnection = dbConnection;
+    }
+    
+    public DBConnection getDbConnection(){
+        return this.dbConnection; 
     }
     
     private void setId(){
@@ -73,10 +88,25 @@ public class Project {
         output.showOutput(sb.toString());
     }
     
-    public boolean addProjectToDB(){
+    public boolean addProjectToDB(Output output){
         boolean result = false;
-        String query = "";
+        String query = "CREATE TABLE IF NOT EXISTS `" + projectTableName +  "`" + "," + 
+                       "'project_id' SMALLINT NOT NULL," +
+                       "'project_name' VARCHAR (200) NOT NULL,"+
+                       "'project_description' VARCHAR(1000) NOT NULL;";
         
+        // create project table if it does not exists
+        result = this.getDbConnection().writeToDB(query);
+        if (!result){
+            output.showOutput(ERROR_IN_TABLE_CREATION + ": " + projectTableName);
+            return result;
+        }
+        
+        query = "INSERT INTO " + projectTableName + "( project_id, project_name, project_description)"
+                + "VALUES" + ""
+                + "(" + this.getId() + ", " + this.getName() + ", " + this.getDescription() + ");";
+        
+        result = this.getDbConnection().writeToDB(query);
         return result;
     }
     
