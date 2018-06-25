@@ -19,12 +19,15 @@ public class DBConnectionImpl implements DBConnection{
     
     private static final String dbUserPass = "rms_root_Pass1" ;
     
+    private static final String additionalConnectionProperties = "?autoReconnect=true&useSSL=false";
+    
     private Output output;
     
     private DBConnectionImpl(){
-        initDBSchema();
+        //initDBSchema();
     }
     
+    @Override
     public void setOutput(Output output){
         this.output = output;
     }
@@ -35,12 +38,12 @@ public class DBConnectionImpl implements DBConnection{
     
     private void initDBSchema(){
         String query = "";
-        try(Connection connection = DriverManager.getConnection(dbAddress, dbUser, dbUserPass)){
+        try(Connection connection = DriverManager.getConnection(dbAddress + dbSchema + additionalConnectionProperties, dbUser, dbUserPass)){
             this.getOutput().showOutput("Connecting to the databse... SUCCESSFUL");
             query = "CREATE SCHEMA IF NOT EXISTS " + dbSchema;
             connection.prepareStatement(query);
             connection.commit();
-        }catch(SQLException ex){
+        }catch(SQLException ex){               
             ex.printStackTrace();
         } 
     }
@@ -53,12 +56,14 @@ public class DBConnectionImpl implements DBConnection{
     @Override
     public boolean writeToDB(String query){
         boolean result = false;
-        try(Connection connection = DriverManager.getConnection(dbAddress, dbUser, dbUserPass);
+        try(Connection connection = DriverManager.getConnection(dbAddress + dbSchema + additionalConnectionProperties, dbUser, dbUserPass);
             Statement statement = connection.prepareStatement(query)){
             this.getOutput().showOutput("Connecting to the databse... SUCCESSFUL"); 
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
+            result = true;
         }catch(SQLException ex){
             ex.printStackTrace();
+            this.getOutput().showOutput("SQL Exception recieved: " + ex.getSQLState());
         } 
         
         return result;

@@ -90,10 +90,10 @@ public class Project {
     
     public boolean addProjectToDB(Output output){
         boolean result = false;
-        String query = "CREATE TABLE IF NOT EXISTS `" + projectTableName +  "`" + "," + 
-                       "'project_id' SMALLINT NOT NULL," +
-                       "'project_name' VARCHAR (200) NOT NULL,"+
-                       "'project_description' VARCHAR(1000) NOT NULL;";
+        String query = "CREATE TABLE IF NOT EXISTS " + projectTableName + "(" + 
+                       "project_id INT NOT NULL," +
+                       "project_name VARCHAR(200) NOT NULL,"+
+                       "project_description VARCHAR(1000) NOT NULL);";
         
         // create project table if it does not exists
         result = this.getDbConnection().writeToDB(query);
@@ -102,9 +102,9 @@ public class Project {
             return result;
         }
         
-        query = "INSERT INTO " + projectTableName + "( project_id, project_name, project_description)"
+        query = "INSERT INTO " + projectTableName + "( project_id, project_name, project_description) \n"
                 + "VALUES" + ""
-                + "(" + this.getId() + ", " + this.getName() + ", " + this.getDescription() + ");";
+                + "(" + this.getId() + ", '" + this.getName() + "', '" + this.getDescription() + "');";
         
         result = this.getDbConnection().writeToDB(query);
         return result;

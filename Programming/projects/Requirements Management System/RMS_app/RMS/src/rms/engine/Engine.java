@@ -38,6 +38,7 @@ public class Engine {
        boolean isValidInput = false;
        
        DBConnection dBConnection = DBConnectionImpl.getInstance();
+       dBConnection.setOutput(output);
        
 // show wellcome screen
        output.showOutput(userMessages.getWellcomeMessage());

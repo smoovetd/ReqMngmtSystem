@@ -7,6 +7,6 @@ package rms.utils;
  */
 public class IdTracker {
     
-    public static long LAST_USED_PROJECT_INDEX;
+    public static long LAST_USED_PROJECT_INDEX = 0;
     
 }
