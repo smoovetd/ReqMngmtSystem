@@ -50,8 +50,8 @@ public class MainMenu implements Menu{
             
     @Override
     public void show(Output output){
-        for (int key : this.menuItems.keySet()){
-            output.showOutput(key + ": " + this.menuItems.get(key));
+        for (int key : this.getMenuItems().keySet()){
+            output.showOutput(key + ": " + this.getMenuItems().get(key));
         }
     }
     
@@ -60,7 +60,8 @@ public class MainMenu implements Menu{
         return this.menuItems;
     }
     
-    protected void initMenu(){
+    @Override
+    public void initMenu(){
         this.menuItems.put(1, MenuConstants.OPEN_EXISTING_PROJECT);
         this.menuItems.put(2, MenuConstants.OPEN_NEW_PROJECT);
         this.menuItems.put(3, MenuConstants.EXIT);
@@ -159,7 +160,6 @@ public class MainMenu implements Menu{
                     crntProj.printProjInfo(output);
                     crntProjID = crntProj.getId();
                     newMenuItem = new EditProjectMenu(crntProj);
-                    throw new RuntimeException("Open existing project menu is not available");
                 } else{
                     newMenuItem = getMainMenuInstance();
                 }

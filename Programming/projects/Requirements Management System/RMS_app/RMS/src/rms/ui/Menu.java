@@ -19,4 +19,6 @@ public interface Menu {
     public DBConnection getDBConnection();
     
     public void setDBConnection(DBConnection dbConnection);
+    
+    public void initMenu();
 }

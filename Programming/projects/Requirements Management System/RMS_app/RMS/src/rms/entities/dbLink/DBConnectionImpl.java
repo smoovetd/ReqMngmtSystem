@@ -22,7 +22,7 @@ public class DBConnectionImpl implements DBConnection{
     private static final String additionalConnectionProperties = "?autoReconnect=true&useSSL=false";
     
     private Output output;
-    
+        
     private DBConnectionImpl(){
         //initDBSchema();
     }
