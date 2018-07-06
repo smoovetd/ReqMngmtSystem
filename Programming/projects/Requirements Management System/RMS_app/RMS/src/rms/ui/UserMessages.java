@@ -10,6 +10,7 @@ public class UserMessages {
     
     private static final String WELLCOME_MESSAGE = "WELLCOME\nto\nRequirements Management Software";
     private static final String GOODBYE_MESSAGE = "Closing Requirements Management Software\nGoodbye";
+    private static final String NO_PROJECT_FOUND = "No project found. Proceed with opening new project";
 
         
     private UserMessages(){};
@@ -24,5 +25,9 @@ public class UserMessages {
     
     public static String getGoodbyeMessage(){
         return GOODBYE_MESSAGE;
+    }
+    
+    public static String getNoProjectFoundMessage(){
+        return NO_PROJECT_FOUND;
     }
 }

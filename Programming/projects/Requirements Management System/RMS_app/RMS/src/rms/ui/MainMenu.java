@@ -122,18 +122,21 @@ public class MainMenu implements Menu{
         do{
             output.showOutput("List Of All Projects is: ");
             printProjectsById(output);
+            output.showOutput("For back just leave empty");
             output.showOutput("Enter ID:");
             isValidInput = false;
             crntInput = input.getInput();
             
-            try{
-                crntId = Long.valueOf(crntInput);
-            }catch(NumberFormatException ex){
-                output.showOutput("Invalid number is entered!");
-                continue;
+            if(!crntInput.isEmpty()){
+                try{
+                    crntId = Long.valueOf(crntInput);
+                }catch(NumberFormatException ex){
+                    output.showOutput("Invalid number is entered!");
+                    continue;
+                }    
+            } else {
+                break;
             }
-            
-            
         }while(!isValidInput);
         
         return crntId;
@@ -148,8 +151,8 @@ public class MainMenu implements Menu{
         switch (this.menuItems.get(commandId).toUpperCase()){
             case MenuConstants.OPEN_EXISTING_PROJECT:
                 crntProjID = selectExistingProjectID(output, input);
-                if(crntProjID == null){
-                    newMenuItem = null;
+                if(crntProjID == null || crntProjID == -1l){
+                    newMenuItem = getMainMenuInstance();
                 }
                 crntProj = getProjectByID(crntProjID);
                 break;
@@ -161,7 +164,7 @@ public class MainMenu implements Menu{
                     crntProjID = crntProj.getId();
                     newMenuItem = new EditProjectMenu(crntProj);
                 } else{
-                    newMenuItem = getMainMenuInstance();
+                    newMenuItem = null;
                 }
                 break;
             case MenuConstants.EXIT:
@@ -176,7 +179,11 @@ public class MainMenu implements Menu{
     }
     
     public void printProjectsById(Output output){
-        this.projects.stream().forEach(crntProj -> output.showOutput("Project ID: " + crntProj.getId() + " Name: " + crntProj.getName()));
+        if(this.projects.size() == 0){
+            output.showOutput(UserMessages.getNoProjectFoundMessage());
+        }else {
+            this.projects.stream().forEach(crntProj -> output.showOutput("Project ID: " + crntProj.getId() + " Name: " + crntProj.getName()));
+        }
     }
     
     
