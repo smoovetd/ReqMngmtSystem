@@ -1,7 +1,10 @@
 package rms.engine;
 
+import java.util.HashSet;
+import java.util.Set;
 import rms.entities.dbLink.DBConnection;
 import rms.entities.dbLink.DBConnectionImpl;
+import rms.entities.project.Project;
 import rms.io.input.ConsoleInput;
 import rms.io.input.Input;
 import rms.io.output.ConsoleOutput;
@@ -9,6 +12,7 @@ import rms.io.output.Output;
 import rms.ui.MainMenu;
 import rms.ui.Menu;
 import rms.ui.UserMessages;
+import rms.utils.DBOutputSeparators;
 
 
 /**
@@ -54,6 +58,7 @@ public class Engine {
             // process input
        while(!isExit){          
            do{
+               this.crntMenu.initCurrentItems(dBConnection, output);
                sbInput.append(input.getInput());
                isValidInput = false;
                for (int key :  this.crntMenu.getMenuItems().keySet()){
@@ -86,6 +91,5 @@ public class Engine {
         // show exit screen
         output.showOutput(userMessages.getGoodbyeMessage());
         
-    }
-    
+    }   
 }

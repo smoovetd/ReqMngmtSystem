@@ -10,7 +10,7 @@ public interface DBConnection {
     
     public boolean writeToDB(String query);
     
-    public String readFromDB(String query);
+    public String readFromDB(String query,String[] columns);
     
     public void setOutput(Output output);
 }

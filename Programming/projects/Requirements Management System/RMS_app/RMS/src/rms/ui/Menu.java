@@ -21,4 +21,6 @@ public interface Menu {
     public void setDBConnection(DBConnection dbConnection);
     
     public void initMenu();
+    
+    public void initCurrentItems(DBConnection dbConnection, Output output);
 }

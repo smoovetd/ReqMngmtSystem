@@ -8,6 +8,7 @@ import rms.entities.dbLink.DBConnection;
 import rms.entities.project.Project;
 import rms.io.input.Input;
 import rms.io.output.Output;
+import rms.utils.DBOutputSeparators;
 import static rms.utils.IdTracker.LAST_USED_PROJECT_INDEX;
 
 /**
@@ -146,7 +147,7 @@ public class MainMenu implements Menu{
     public Menu processCommand(int commandId, Output output, Input input){
         Menu newMenuItem = null;
         Long crntProjID = -1l;
-        Project crntProj = null;
+        Project crntProj = null;    
         
         switch (this.menuItems.get(commandId).toUpperCase()){
             case MenuConstants.OPEN_EXISTING_PROJECT:
@@ -212,4 +213,26 @@ public class MainMenu implements Menu{
         
         return crntProj;
     }
+    
+    @Override
+    public void initCurrentItems(DBConnection dbConnection, Output output){
+        String query = "SELECT * FROM " + Project.getProjectDBTable();
+        String readFromDB = "";
+        
+        readFromDB = dbConnection.readFromDB(query,Project.getProjectDBTableFields());
+        
+        String[] resultsRows = readFromDB.split(DBOutputSeparators.DB_ROWS_SEPARATATOR);
+        for (String crntRow : resultsRows){
+            String crntName = crntRow.split(DBOutputSeparators.DB_ITEMS_SEPARATATOR)[1];
+            String crntDescription = crntRow.split(DBOutputSeparators.DB_ITEMS_SEPARATATOR)[2];
+            Project crntProj = new Project(crntName, crntDescription, dbConnection);
+            this.addProject(crntProj);
+        }
+            // for debug purposes
+            for (Project crntProj : this.getProjects()){
+                crntProj.printProjInfo(output);
+            }
+        
+    }
+     
 }

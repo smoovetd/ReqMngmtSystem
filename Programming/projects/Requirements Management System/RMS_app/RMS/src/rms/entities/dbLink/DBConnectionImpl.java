@@ -2,6 +2,7 @@ package rms.entities.dbLink;
 
 import java.sql.*;
 import rms.io.output.Output;
+import rms.utils.DBOutputSeparators;
 
 /**
  * Signleton class implementing DB Connection
@@ -70,10 +71,27 @@ public class DBConnectionImpl implements DBConnection{
     }
     
     @Override
-    public String readFromDB(String query){
-        String result = "";
+    public String readFromDB(String query,String[] columns){
+        StringBuilder result = new StringBuilder();
+        try(Connection connection = DriverManager.getConnection(dbAddress + dbSchema + additionalConnectionProperties, dbUser, dbUserPass);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query)){
+            this.getOutput().showOutput("Connecting to the databse... SUCCESSFUL"); 
+            while (resultSet.next()){
+                for (int i = 0; i < columns.length; i++){
+                    result.append(resultSet.getString(columns[i]));
+                    if(i == columns.length - 1){
+                        result.append(DBOutputSeparators.DB_ROWS_SEPARATATOR);
+                    } else {
+                        result.append(DBOutputSeparators.DB_ITEMS_SEPARATATOR);
+                    }           
+                }
+            }
+            resultSet.close();
+        }catch(SQLException ex){
+            ex.printStackTrace(); 
+        }
         
-        
-        return result;
+        return result.toString();
     }    
 }

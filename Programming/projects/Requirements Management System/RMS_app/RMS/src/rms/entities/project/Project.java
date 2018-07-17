@@ -1,5 +1,6 @@
 package rms.entities.project;
 
+import java.sql.ResultSet;
 import static rms.engine.SystemMessages.ERROR_IN_TABLE_CREATION;
 import rms.entities.dbLink.DBConnection;
 import rms.io.output.Output;
@@ -19,9 +20,11 @@ public class Project {
     
     private String description;
     
-    private final String projectTableName = "projects";
+    private static final String projectTableName = "projects";
     
     private DBConnection dbConnection;
+    
+    private static final String[] projectsDBFIelds = new String[] {"project_id", "project_name", "project_description"};
     
     //private HashSet<Requirement> requirements;
     
@@ -48,6 +51,9 @@ public class Project {
         this.id = IdTracker.LAST_USED_PROJECT_INDEX++;
     }
     
+    public void setID(long id){
+        this.id = id;
+    }
     public long getId(){
         return this.id;
     }
@@ -90,7 +96,7 @@ public class Project {
     
     public boolean addProjectToDB(Output output){
         boolean result = false;
-        String query = "CREATE TABLE IF NOT EXISTS " + projectTableName + "(" + 
+        String query = "CREATE TABLE IF NOT EXISTS " + getProjectDBTable() + "(" + 
                        "project_id INT NOT NULL," +
                        "project_name VARCHAR(200) NOT NULL,"+
                        "project_description VARCHAR(1000) NOT NULL);";
@@ -98,13 +104,12 @@ public class Project {
         // create project table if it does not exists
         result = this.getDbConnection().writeToDB(query);
         if (!result){
-            output.showOutput(ERROR_IN_TABLE_CREATION + ": " + projectTableName);
+            output.showOutput(ERROR_IN_TABLE_CREATION + ": " + getProjectDBTable());
             return result;
         }
         
-        query = "INSERT INTO " + projectTableName + "( project_id, project_name, project_description) \n"
-                + "VALUES" + ""
-                + "(" + this.getId() + ", '" + this.getName() + "', '" + this.getDescription() + "');";
+        query = "INSERT INTO " + getProjectDBTable() + "( " + Project.projectsDBFIelds[0] + ", " + Project.projectsDBFIelds[1] + ", " + Project.projectsDBFIelds[2] + ") \n" +
+                "VALUES" + "(" + this.getId() + ", '" + this.getName() + "', '" + this.getDescription() + "');";
         
         result = this.getDbConnection().writeToDB(query);
         return result;
@@ -116,6 +121,17 @@ public class Project {
         
         return result;        
     }
+   
+    public static String getProjectDBTable(){
+        return projectTableName;
+    }
     
+    public static String[] getProjectDBTableFields(){
+        return projectsDBFIelds;
+    }
+    
+    public void setNextProjectId(){
+        
+    }
     
 }
