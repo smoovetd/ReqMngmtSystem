@@ -53,12 +53,14 @@ public class Engine {
        // show menu
        this.crntMenu.show(output);
        
+       // init all projects, baselines and requirements from the application
+       this.crntMenu.initCurrentItems(dBConnection, output);
+       
          // while not exit
             // get input
             // process input
        while(!isExit){          
            do{
-               this.crntMenu.initCurrentItems(dBConnection, output);
                sbInput.append(input.getInput());
                isValidInput = false;
                for (int key :  this.crntMenu.getMenuItems().keySet()){

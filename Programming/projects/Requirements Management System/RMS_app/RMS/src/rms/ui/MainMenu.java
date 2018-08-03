@@ -131,6 +131,7 @@ public class MainMenu implements Menu{
             if(!crntInput.isEmpty()){
                 try{
                     crntId = Long.valueOf(crntInput);
+                    isValidInput = true;
                 }catch(NumberFormatException ex){
                     output.showOutput("Invalid number is entered!");
                     continue;
@@ -156,6 +157,7 @@ public class MainMenu implements Menu{
                     newMenuItem = getMainMenuInstance();
                 }
                 crntProj = getProjectByID(crntProjID);
+                newMenuItem = new EditProjectMenu(crntProj);
                 break;
                                 
             case MenuConstants.OPEN_NEW_PROJECT:
@@ -223,16 +225,16 @@ public class MainMenu implements Menu{
         
         String[] resultsRows = readFromDB.split(DBOutputSeparators.DB_ROWS_SEPARATATOR);
         for (String crntRow : resultsRows){
+            long crntId = Long.parseLong(crntRow.split(DBOutputSeparators.DB_ITEMS_SEPARATATOR)[0]);
             String crntName = crntRow.split(DBOutputSeparators.DB_ITEMS_SEPARATATOR)[1];
             String crntDescription = crntRow.split(DBOutputSeparators.DB_ITEMS_SEPARATATOR)[2];
-            Project crntProj = new Project(crntName, crntDescription, dbConnection);
+            Project crntProj = new Project(crntId, crntName, crntDescription, dbConnection);
             this.addProject(crntProj);
         }
             // for debug purposes
             for (Project crntProj : this.getProjects()){
                 crntProj.printProjInfo(output);
             }
-        
     }
      
 }

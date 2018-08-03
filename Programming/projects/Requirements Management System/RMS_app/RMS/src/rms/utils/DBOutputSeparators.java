@@ -6,7 +6,7 @@ package rms.utils;
  */
 public class DBOutputSeparators {
     
-    public static final String DB_ITEMS_SEPARATATOR = "-|-";
+    public static final String DB_ITEMS_SEPARATATOR = "-&-";
     
     public static final String DB_ROWS_SEPARATATOR = "--;";
     

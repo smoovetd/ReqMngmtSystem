@@ -33,11 +33,18 @@ public class Project {
     //private HashSet<Baseline> baselines;
     
     public Project (String name, String description, DBConnection dbConnection){
-        this.setId();
+        this.setDefaultId();
         this.setName(name);
         this.setDescription(description);
         this.setDBConnection(dbConnection);
     }
+    
+    public Project (Long id, String name, String description, DBConnection dbConnection){
+        this.setId(id);
+        this.setName(name);
+        this.setDescription(description);
+        this.setDBConnection(dbConnection);
+    }    
     
     private void setDBConnection(DBConnection dbConnection){
         this.dbConnection = dbConnection;
@@ -47,12 +54,16 @@ public class Project {
         return this.dbConnection; 
     }
     
-    private void setId(){
-        this.id = IdTracker.LAST_USED_PROJECT_INDEX++;
+    private void setDefaultId(){
+        this.id = IdTracker.LAST_USED_PROJECT_INDEX;
+        IdTracker.LAST_USED_PROJECT_INDEX++;
     }
     
-    public void setID(long id){
+    public void setId(long id){
         this.id = id;
+        if(IdTracker.LAST_USED_PROJECT_INDEX <= id){
+            IdTracker.LAST_USED_PROJECT_INDEX = id+1;
+        }
     }
     public long getId(){
         return this.id;
@@ -97,9 +108,10 @@ public class Project {
     public boolean addProjectToDB(Output output){
         boolean result = false;
         String query = "CREATE TABLE IF NOT EXISTS " + getProjectDBTable() + "(" + 
-                       "project_id INT NOT NULL," +
-                       "project_name VARCHAR(200) NOT NULL,"+
-                       "project_description VARCHAR(1000) NOT NULL);";
+                       Project.projectsDBFIelds[0] + " INT NOT NULL," +
+                       Project.projectsDBFIelds[1] + " VARCHAR(200) NOT NULL,"+
+                       Project.projectsDBFIelds[2] + " VARCHAR(1000) NOT NULL," +
+                       "PRIMARY KEY (" + Project.projectsDBFIelds[0] + "));";
         
         // create project table if it does not exists
         result = this.getDbConnection().writeToDB(query);
